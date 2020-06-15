@@ -6,6 +6,8 @@ import {
 } from 'react-router-dom';
 import Sidebar from './components/Sidebar/Sidebar';
 import Header from './components/Header/Header';
+import MapScreen from './pages/MapScreen/MapScreen';
+import FAQScreen from './pages/FAQScreen/FAQScreen';
 
 function App() {
   const [sidebar, setSidebar] = useState(false)
@@ -22,11 +24,11 @@ function App() {
 
       <Switch>
         <Route exact path="/faq">
-          <h1>FAQ Screen</h1>
+          <FAQScreen />
         </Route>
 
         <Route exact path="/">
-          <h1>Map Screen</h1>
+          <MapScreen />
         </Route>
       </Switch>
     </Router>
