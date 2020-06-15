@@ -21,7 +21,7 @@ export default function Header({ onMenuClick }: PropTypes) {
   const classes = useStyles();
 
   return (
-    <AppBar position="static">
+    <AppBar position="fixed">
       <Toolbar>
         <IconButton
           onClick={onMenuClick}
