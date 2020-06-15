@@ -21,6 +21,7 @@ module.exports = override(
       ),
       'process.env.FIREB_APP_ID': JSON.stringify(process.env.FIREB_APP_ID),
       'process.env.ROLLB_TOKEN': JSON.stringify(process.env.ROLLB_TOKEN),
+      'process.env.API_URL': JSON.stringify(process.env.API_URL),
     })
   )
 );
