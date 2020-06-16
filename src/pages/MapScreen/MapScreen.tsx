@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useCallback, useMemo } from 'react';
 import { GoogleMap, LoadScript, Marker, HeatmapLayer } from '@react-google-maps/api';
 import * as api from '../../utils/api'
+import { listen as listenToStores, Store } from '../../models/stores'
 
 const style = {
   width: '100%',
@@ -23,15 +24,15 @@ const buildHeatmapData = (cases: api.Case[]) => (
 )
 
 export default function MapScreen() {
-  const [stores, updateStores] = useState([])
+  const [stores, updateStores] = useState<Store[]>([])
   const [hospitals, updateHospitals] = useState<api.Hospital[]>([])
   const [sickUsers, updateUsers] = useState([])
   const [cases, updateCases] = useState<api.Case[]>([])
   const [heatmap, updateHeatmap] = useState<google.maps.visualization.HeatmapLayerOptions>()
 
   useEffect(() => {
-    api.get('/stores').then(data => {
-      updateStores((data as unknown as {data: []}).data)
+    listenToStores(stores => {
+      updateStores(stores)
     })
   }, [])
 
@@ -84,7 +85,7 @@ export default function MapScreen() {
         />
 
         {/* Render stores. */}
-        {stores && stores.map((store: api.Store) => (
+        {stores && stores.map((store: Store) => (
           <Marker
             key={store.id}
             icon="https://res.cloudinary.com/stanleysathler/covid-unibh/shop.png"
