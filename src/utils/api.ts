@@ -12,6 +12,13 @@ const location = (lat: number, lng: number) => ({
 
 export type Store = {
   id: number;
+  name: string;
+  location: { lat: number, lng: number };
+};
+
+export type Hospital = {
+  id: number;
+  name: string;
   location: { lat: number, lng: number };
 };
 
@@ -44,6 +51,10 @@ const mockedCases: Case[] = [
   { id: 2, neighborhood: 'Buritis', location: location(-19.975713, -43.968317), serious: 12, nonSerious: 10, deaths: 2 },
 ];
 
+const mockedHospitals: Hospital[] = [
+  { id: 1, name: 'Hermes Pardini', location: location(-19.960919, -43.969963) }
+]
+
 export const get = (route: string) => {
   // return axios.get(process.env.API_URL + route)
   return new Promise((res) => {
@@ -53,5 +64,7 @@ export const get = (route: string) => {
       return res({ data: sickUsers })
     else if (route === '/cases')
       return res({ data: mockedCases })
+    else if (route === '/hospitals')
+      return res({ data: mockedHospitals })
   })
 }

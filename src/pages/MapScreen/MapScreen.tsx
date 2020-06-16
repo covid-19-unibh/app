@@ -24,6 +24,7 @@ const buildHeatmapData = (cases: api.Case[]) => (
 
 export default function MapScreen() {
   const [stores, updateStores] = useState([])
+  const [hospitals, updateHospitals] = useState<api.Hospital[]>([])
   const [sickUsers, updateUsers] = useState([])
   const [cases, updateCases] = useState<api.Case[]>([])
   const [heatmap, updateHeatmap] = useState<google.maps.visualization.HeatmapLayerOptions>()
@@ -44,6 +45,13 @@ export default function MapScreen() {
     api.get('/cases').then(data => {
       const cases = (data as unknown as { data: api.Case[] }).data
       updateCases(cases)
+    })
+  }, [])
+
+  useEffect(() => {
+    api.get('/hospitals').then(data => {
+      const hospitals = (data as unknown as { data: api.Hospital[] }).data
+      updateHospitals(hospitals)
     })
   }, [])
 
@@ -69,6 +77,7 @@ export default function MapScreen() {
           disableDefaultUI: true,
         }}
       >
+        {/* Confirmed cases heatmap. */}
         <HeatmapLayer
           options={heatmap}
           data={[]}
@@ -76,7 +85,20 @@ export default function MapScreen() {
 
         {/* Render stores. */}
         {stores && stores.map((store: api.Store) => (
-          <Marker key={store.id} position={store.location} />
+          <Marker
+            key={store.id}
+            icon="https://res.cloudinary.com/stanleysathler/covid-unibh/shop.png"
+            position={store.location}
+          />
+        ))}
+
+        {/* Render places doing exams. */}
+        {hospitals && hospitals.map((hospital: api.Hospital) => (
+          <Marker
+            key={hospital.id}
+            icon="https://res.cloudinary.com/stanleysathler/covid-unibh/hospital.png"
+            position={hospital.location}
+          />
         ))}
 
         {/* Render users. */}
