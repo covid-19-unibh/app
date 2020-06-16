@@ -2,6 +2,7 @@ import React, { useEffect, useState, useCallback, useMemo } from 'react';
 import { GoogleMap, LoadScript, Marker, HeatmapLayer } from '@react-google-maps/api';
 import * as api from '../../utils/api'
 import { listen as listenToStores, Store } from '../../models/stores'
+import { listen as listenToUsers, User } from '../../models/users'
 
 const style = {
   width: '100%',
@@ -26,7 +27,7 @@ const buildHeatmapData = (cases: api.Case[]) => (
 export default function MapScreen() {
   const [stores, updateStores] = useState<Store[]>([])
   const [hospitals, updateHospitals] = useState<api.Hospital[]>([])
-  const [sickUsers, updateUsers] = useState([])
+  const [sickUsers, updateUsers] = useState<User[]>([])
   const [cases, updateCases] = useState<api.Case[]>([])
   const [heatmap, updateHeatmap] = useState<google.maps.visualization.HeatmapLayerOptions>()
 
@@ -37,8 +38,8 @@ export default function MapScreen() {
   }, [])
 
   useEffect(() => {
-    api.get('/sickUsers').then(data => {
-      updateUsers((data as unknown as {data: []}).data)
+    listenToUsers(users => {
+      updateUsers(users)
     })
   }, [])
 
@@ -103,7 +104,7 @@ export default function MapScreen() {
         ))}
 
         {/* Render users. */}
-        {sickUsers && sickUsers.map((user: api.User) => (
+        {sickUsers && sickUsers.map((user: User) => (
           <Marker
             key={user.id}
             icon="https://i.ibb.co/Ln8d1Nf/infected-circle.png"

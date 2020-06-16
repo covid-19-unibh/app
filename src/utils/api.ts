@@ -9,11 +9,6 @@ export type Hospital = {
   location: { lat: number, lng: number };
 };
 
-export type User = {
-  id: number;
-  location: { lat: number, lng: number };
-};
-
 export type Case = {
   id: number;
   neighborhood: string;
@@ -22,11 +17,6 @@ export type Case = {
   nonSerious: number;
   deaths: number;
 };
-
-const sickUsers = [
-  { id: 1, location: location(-19.9659916, -43.9722723), isSick: true },
-  { id: 2, location: location(-19.975164, -43.968839), isSick: true },
-]
 
 const mockedCases: Case[] = [
   { id: 1, neighborhood: 'Estoril', location: location(-19.961755, -43.961543), serious: 5, nonSerious: 7, deaths: 0 },
@@ -40,9 +30,7 @@ const mockedHospitals: Hospital[] = [
 export const get = (route: string) => {
   // return axios.get(process.env.API_URL + route)
   return new Promise((res) => {
-    if (route === '/sickUsers')
-      return res({ data: sickUsers })
-    else if (route === '/cases')
+    if (route === '/cases')
       return res({ data: mockedCases })
     else if (route === '/hospitals')
       return res({ data: mockedHospitals })
