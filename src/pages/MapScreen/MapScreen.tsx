@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useCallback, useMemo } from 'react';
 import { GoogleMap, LoadScript, Marker, HeatmapLayer } from '@react-google-maps/api';
-import * as api from '../../utils/api'
 import { listen as listenToStores, Store } from '../../models/stores'
 import { listen as listenToUsers, User } from '../../models/users'
 import { fetch as fetchCases, Case } from '../../models/cases';
+import { fetch as fetchHospitals, Hospital } from '../../models/hospitals';
 
 const style = {
   width: '100%',
@@ -31,7 +31,7 @@ type HeatmapItem = google.maps.visualization.WeightedLocation
 
 export default function MapScreen() {
   const [stores, updateStores] = useState<Store[]>([])
-  const [hospitals, updateHospitals] = useState<api.Hospital[]>([])
+  const [hospitals, updateHospitals] = useState<Hospital[]>([])
   const [sickUsers, updateUsers] = useState<User[]>([])
   const [cases, updateCases] = useState<Case[]>([])
   const [heatOptions] = useState<HeatmapOptions>({ radius: 200, opacity: 0.25 })
@@ -56,8 +56,7 @@ export default function MapScreen() {
   }, [])
 
   useEffect(() => {
-    api.get('/hospitals').then(data => {
-      const hospitals = (data as unknown as { data: api.Hospital[] }).data
+    fetchHospitals(hospitals => {
       updateHospitals(hospitals)
     })
   }, [])
@@ -87,7 +86,7 @@ export default function MapScreen() {
         />
 
         {/* Render stores. */}
-        {stores && stores.map((store: Store) => (
+        {stores && stores.map(store => (
           <Marker
             key={store.id}
             icon="https://res.cloudinary.com/stanleysathler/covid-unibh/shop.png"
@@ -96,7 +95,7 @@ export default function MapScreen() {
         ))}
 
         {/* Render places doing exams. */}
-        {hospitals && hospitals.map((hospital: api.Hospital) => (
+        {hospitals && hospitals.map(hospital => (
           <Marker
             key={hospital.id}
             icon="https://res.cloudinary.com/stanleysathler/covid-unibh/hospital.png"
@@ -105,7 +104,7 @@ export default function MapScreen() {
         ))}
 
         {/* Render users. */}
-        {sickUsers && sickUsers.map((user: User) => (
+        {sickUsers && sickUsers.map(user => (
           <Marker
             key={user.id}
             icon="https://i.ibb.co/Ln8d1Nf/infected-circle.png"
