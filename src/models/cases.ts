@@ -1,5 +1,4 @@
 import { buildLocation } from "../utils/functions"
-import { Data } from "@react-google-maps/api"
 
 export type Case = {
   id: number;

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback, useMemo } from 'react';
+import React, { useEffect, useState } from 'react';
 import { GoogleMap, LoadScript, Marker, HeatmapLayer } from '@react-google-maps/api';
 import { listen as listenToStores, Store } from '../../models/stores'
 import { listen as listenToUsers, User } from '../../models/users'
