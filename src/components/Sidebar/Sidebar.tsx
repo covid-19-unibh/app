@@ -36,22 +36,22 @@ export default function Sidebar({ open, onToggle }: PropTypes) {
           onKeyDown={onToggle}
         >
           <List>
-            <ListItem button key="Map">
-              <ListItemIcon>
-                <MapIcon />
-              </ListItemIcon>
-              <Link to="/">
+            <Link to="/">
+              <ListItem button key="Map">
+                <ListItemIcon>
+                  <MapIcon />
+                </ListItemIcon>
                 <ListItemText primary="Mapa" />
-              </Link>
-            </ListItem>
-            <ListItem button key="FAQ">
-              <ListItemIcon>
-                <QuestionAnswerIcon />
-              </ListItemIcon>
-              <Link to="/faq">
+              </ListItem>
+            </Link>
+            <Link to="/faq">
+              <ListItem button key="FAQ">
+                <ListItemIcon>
+                  <QuestionAnswerIcon />
+                </ListItemIcon>
                 <ListItemText primary="FAQ" />
-              </Link>
-            </ListItem>
+              </ListItem>
+            </Link>
           </List>
         </div>
       </Drawer>
