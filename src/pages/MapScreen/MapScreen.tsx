@@ -4,10 +4,11 @@ import { listen as listenToStores, Store } from '../../models/stores'
 import { listen as listenToUsers, User } from '../../models/users'
 import { fetch as fetchCases, Case } from '../../models/cases';
 import { fetch as fetchHospitals, Hospital } from '../../models/hospitals';
+import { makeStyles } from '@material-ui/core';
 
 const style = {
   width: '100%',
-  height: '100vh'
+  height: 'calc(100vh - 56px)'
 }
 
 const mapCenter = {
