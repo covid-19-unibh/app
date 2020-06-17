@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { makeStyles } from '@material-ui/core/styles';
 import {
   BrowserRouter as Router,
   Switch,
@@ -9,7 +10,14 @@ import Header from './components/Header/Header';
 import MapScreen from './pages/MapScreen/MapScreen';
 import FAQScreen from './pages/FAQScreen/FAQScreen';
 
+const useStyles = makeStyles((theme) => ({
+  content: {
+    paddingTop: theme.spacing(7),
+  }
+}));
+
 function App() {
+  const classes = useStyles();
   const [sidebar, setSidebar] = useState(false)
   const toggleSidebar = () => setSidebar(!sidebar)
 
@@ -22,15 +30,17 @@ function App() {
 
       <Header onMenuClick={toggleSidebar} />
 
-      <Switch>
-        <Route exact path="/faq">
-          <FAQScreen />
-        </Route>
+      <main className={classes.content}>
+        <Switch>
+          <Route exact path="/faq">
+            <FAQScreen />
+          </Route>
 
-        <Route exact path="/">
-          <MapScreen />
-        </Route>
-      </Switch>
+          <Route exact path="/">
+            <MapScreen />
+          </Route>
+        </Switch>
+      </main>
     </Router>
   );
 }
