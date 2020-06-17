@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import {
-  BrowserRouter as Router,
   Switch,
   Route,
+  useLocation,
 } from 'react-router-dom';
 import Sidebar from './components/Sidebar/Sidebar';
 import Header from './components/Header/Header';
@@ -14,21 +14,32 @@ const useStyles = makeStyles((theme) => ({
   content: {
     paddingTop: theme.spacing(7),
   }
-}));
+}))
+
+const chooseTitle = (pathname: string) => (
+  pathname === '/'
+    ? 'Mapa'
+    : 'Chat'
+)
 
 function App() {
   const classes = useStyles();
   const [sidebar, setSidebar] = useState(false)
   const toggleSidebar = () => setSidebar(!sidebar)
+  const location = useLocation()
+  const title = useMemo(() => chooseTitle(location.pathname), [location.pathname])
 
   return (
-    <Router>
+    <>
       <Sidebar
         open={sidebar}
         onToggle={toggleSidebar}
       />
 
-      <Header onMenuClick={toggleSidebar} />
+      <Header
+        title={title}
+        onMenuClick={toggleSidebar}
+      />
 
       <main className={classes.content}>
         <Switch>
@@ -41,7 +52,7 @@ function App() {
           </Route>
         </Switch>
       </main>
-    </Router>
+    </>
   );
 }
 
