@@ -1,33 +1,33 @@
 import React from 'react'
-import SendIcon from '@material-ui/icons/Send';
+import SendIcon from '@material-ui/icons/Send'
 import { makeStyles } from '@material-ui/core'
-import Button from '@material-ui/core/Button';
+import Button from '@material-ui/core/Button'
 import Container from '../../components/Container/Container'
 import Chat from '../../components/Chat/Chat'
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   content: {
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-between',
-    height: `calc(100vh - ${theme.spacing(7)}px)`
+    height: `calc(100vh - ${theme.spacing(7)}px)`,
   },
   footer: {
     background: '#fff',
-    boxShadow: theme.shadows[2]
+    boxShadow: theme.shadows[2],
   },
   input: {
     border: 'none',
     fontFamily: 'inherit',
 
     '&:focus': {
-      outline: 'none'
-    }
+      outline: 'none',
+    },
   },
   form: {
     display: 'flex',
     padding: theme.spacing(2),
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
 }))
 

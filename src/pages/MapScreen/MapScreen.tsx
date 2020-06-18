@@ -1,13 +1,18 @@
-import React, { useEffect, useState } from 'react';
-import { GoogleMap, LoadScript, Marker, HeatmapLayer } from '@react-google-maps/api';
+import React, { useEffect, useState } from 'react'
+import {
+  GoogleMap,
+  LoadScript,
+  Marker,
+  HeatmapLayer,
+} from '@react-google-maps/api'
 import { listen as listenToStores, Store } from '../../models/stores'
 import { listen as listenToUsers, User } from '../../models/users'
-import { fetch as fetchCases, Case } from '../../models/cases';
-import { fetch as fetchHospitals, Hospital } from '../../models/hospitals';
+import { fetch as fetchCases, Case } from '../../models/cases'
+import { fetch as fetchHospitals, Hospital } from '../../models/hospitals'
 
 const style = {
   width: '100%',
-  height: 'calc(100vh - 56px)'
+  height: 'calc(100vh - 56px)',
 }
 
 const mapCenter = {
@@ -17,13 +22,12 @@ const mapCenter = {
 
 const libraries = ['visualization']
 
-const buildHeatmapData = (cases: Case[]) => (
-  cases.map(c => ({
+const buildHeatmapData = (cases: Case[]) =>
+  cases.map((c) => ({
     // @ts-ignore
     location: new google.maps.LatLng(c.location.lat, c.location.lng),
-    weight: (c.serious + c.nonSerious + c.deaths)
+    weight: c.serious + c.nonSerious + c.deaths,
   }))
-)
 
 type HeatmapLayerOptions = google.maps.visualization.HeatmapLayerOptions
 type HeatmapOptions = Omit<HeatmapLayerOptions, 'data'>
@@ -34,29 +38,32 @@ export default function MapScreen() {
   const [hospitals, updateHospitals] = useState<Hospital[]>([])
   const [sickUsers, updateUsers] = useState<User[]>([])
   const [cases, updateCases] = useState<Case[]>([])
-  const [heatOptions] = useState<HeatmapOptions>({ radius: 200, opacity: 0.25 })
+  const [heatOptions] = useState<HeatmapOptions>({
+    radius: 200,
+    opacity: 0.25,
+  })
   const [heatData, updateHeatData] = useState<HeatmapItem[]>([])
 
   useEffect(() => {
-    listenToStores(stores => {
+    listenToStores((stores) => {
       updateStores(stores)
     })
   }, [])
 
   useEffect(() => {
-    listenToUsers(users => {
+    listenToUsers((users) => {
       updateUsers(users)
     })
   }, [])
 
   useEffect(() => {
-    fetchCases(cases => {
+    fetchCases((cases) => {
       updateCases(cases)
     })
   }, [])
 
   useEffect(() => {
-    fetchHospitals(hospitals => {
+    fetchHospitals((hospitals) => {
       updateHospitals(hospitals)
     })
   }, [])
@@ -86,32 +93,35 @@ export default function MapScreen() {
         />
 
         {/* Render stores. */}
-        {stores && stores.map(store => (
-          <Marker
-            key={store.id}
-            icon="https://res.cloudinary.com/stanleysathler/covid-unibh/shop.png"
-            position={store.location}
-          />
-        ))}
+        {stores &&
+          stores.map((store) => (
+            <Marker
+              key={store.id}
+              icon="https://res.cloudinary.com/stanleysathler/covid-unibh/shop.png"
+              position={store.location}
+            />
+          ))}
 
         {/* Render places doing exams. */}
-        {hospitals && hospitals.map(hospital => (
-          <Marker
-            key={hospital.id}
-            icon="https://res.cloudinary.com/stanleysathler/covid-unibh/hospital.png"
-            position={hospital.location}
-          />
-        ))}
+        {hospitals &&
+          hospitals.map((hospital) => (
+            <Marker
+              key={hospital.id}
+              icon="https://res.cloudinary.com/stanleysathler/covid-unibh/hospital.png"
+              position={hospital.location}
+            />
+          ))}
 
         {/* Render users. */}
-        {sickUsers && sickUsers.map(user => (
-          <Marker
-            key={user.id}
-            icon="https://i.ibb.co/Ln8d1Nf/infected-circle.png"
-            position={user.location}
-          />
-        ))}
+        {sickUsers &&
+          sickUsers.map((user) => (
+            <Marker
+              key={user.id}
+              icon="https://i.ibb.co/Ln8d1Nf/infected-circle.png"
+              position={user.location}
+            />
+          ))}
       </GoogleMap>
     </LoadScript>
-    );
-};
+  )
+}

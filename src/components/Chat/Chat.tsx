@@ -10,16 +10,16 @@ const useStyles = makeStyles((theme) => ({
   },
   received: {
     marginRight: theme.spacing(5),
-    background: '#fff'
+    background: '#fff',
   },
   sent: {
     marginLeft: theme.spacing(5),
-    background: theme.palette.primary.light
-  }
+    background: theme.palette.primary.light,
+  },
 }))
 
 export default function Chat() {
-  const classes = useStyles();
+  const classes = useStyles()
 
   return (
     <div>

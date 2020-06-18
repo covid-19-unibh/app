@@ -1,8 +1,8 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import MenuIcon from '@material-ui/icons/Menu';
-import { Toolbar, IconButton, Typography } from '@material-ui/core';
+import React from 'react'
+import { makeStyles } from '@material-ui/core/styles'
+import AppBar from '@material-ui/core/AppBar'
+import MenuIcon from '@material-ui/icons/Menu'
+import { Toolbar, IconButton, Typography } from '@material-ui/core'
 
 const useStyles = makeStyles((theme) => ({
   menuButton: {
@@ -10,16 +10,16 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     flexGrow: 1,
-  }
-}));
+  },
+}))
 
 interface PropTypes {
-  title: string;
-  onMenuClick: () => void;
+  title: string
+  onMenuClick: () => void
 }
 
 export default function Header({ title, onMenuClick }: PropTypes) {
-  const classes = useStyles();
+  const classes = useStyles()
 
   return (
     <AppBar position="fixed">

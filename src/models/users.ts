@@ -1,8 +1,8 @@
-import { buildLocation } from "../utils/functions"
+import { buildLocation } from '../utils/functions'
 
 export type User = {
-  id: number;
-  location: { lat: number, lng: number };
+  id: number
+  location: { lat: number; lng: number }
 }
 
 export type DataReceiveCallback = (data: User[]) => void

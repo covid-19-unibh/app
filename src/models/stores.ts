@@ -1,9 +1,9 @@
-import { buildLocation } from "../utils/functions"
+import { buildLocation } from '../utils/functions'
 
 export type Store = {
-  id: number;
-  name: string;
-  location: { lat: number, lng: number };
+  id: number
+  name: string
+  location: { lat: number; lng: number }
 }
 
 export type DataReceiveCallback = (data: Store[]) => void
@@ -14,8 +14,18 @@ const products = [
 ]
 
 const stores = [
-  { id: 1, name: 'Drogaria Araújo', location: buildLocation(-19.963002, -43.964006), products },
-  { id: 2, name: 'Droga Raia', location: buildLocation(-19.959649, -43.965991), products },
+  {
+    id: 1,
+    name: 'Drogaria Araújo',
+    location: buildLocation(-19.963002, -43.964006),
+    products,
+  },
+  {
+    id: 2,
+    name: 'Droga Raia',
+    location: buildLocation(-19.959649, -43.965991),
+    products,
+  },
 ]
 
 export const listen = (onDataReceive: DataReceiveCallback) => {

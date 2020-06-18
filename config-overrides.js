@@ -1,9 +1,9 @@
 /**
  * Overrides CRA's default Webpack config.
  */
-require('dotenv').config();
-const { DefinePlugin } = require('webpack');
-const { override, addWebpackPlugin } = require('customize-cra');
+require('dotenv').config()
+const { DefinePlugin } = require('webpack')
+const { override, addWebpackPlugin } = require('customize-cra')
 
 module.exports = override(
   /**
@@ -24,4 +24,4 @@ module.exports = override(
       'process.env.API_URL': JSON.stringify(process.env.API_URL),
     })
   )
-);
+)
