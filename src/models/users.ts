@@ -1,19 +1,33 @@
 import { buildLocation } from '../utils/functions'
+import fire from './firebase'
 
 export type User = {
-  id: number
+  id: number | string
   location: { lat: number; lng: number }
+  isSick: boolean
 }
 
 export type DataReceiveCallback = (data: User[]) => void
 
-const mockedUsers = [
-  { id: 1, location: buildLocation(-19.9659916, -43.9722723), isSick: true },
-  { id: 2, location: buildLocation(-19.975164, -43.968839), isSick: true },
-]
+const adaptData = (usersSnapshot: any[]) =>
+  usersSnapshot.map(us => {
+    const serialized = us.data()
+    return {
+      id: us.id,
+      location: buildLocation(
+        serialized.location.latitude,
+        serialized.location.longitude
+      ),
+      isSick: serialized.isSick
+    }
+  })
 
 export const listen = (onDataReceive: DataReceiveCallback) => {
-  setTimeout(() => {
-    onDataReceive(mockedUsers)
-  }, 1000)
+  fire
+    .firestore()
+    .collection('users')
+    .where('isSick', '==', true)
+    .onSnapshot(qs => {
+      onDataReceive(adaptData(qs.docs))
+    })
 }
