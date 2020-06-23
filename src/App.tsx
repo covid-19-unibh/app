@@ -5,6 +5,8 @@ import Sidebar from './components/Sidebar/Sidebar'
 import Header from './components/Header/Header'
 import MapScreen from './pages/MapScreen/MapScreen'
 import FAQScreen from './pages/FAQScreen/FAQScreen'
+import LocationRequired from './pages/LocationRequired/LocationRequired'
+import LocationProtectedRoute from './components/LocationProtectedRoute/LocationProtectedRoute'
 
 const useStyles = makeStyles((theme) => ({
   content: {
@@ -35,8 +37,12 @@ function App() {
             <FAQScreen />
           </Route>
 
-          <Route exact path="/">
+          <LocationProtectedRoute exact path="/">
             <MapScreen />
+          </LocationProtectedRoute>
+
+          <Route exact path="/location-required">
+            <LocationRequired />
           </Route>
         </Switch>
       </main>
