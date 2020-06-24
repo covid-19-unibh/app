@@ -1,9 +1,15 @@
 import { buildLocation } from '../utils/functions'
 
+export type ProductStore = {
+  name: string
+  qnty: number
+}
+
 export type Store = {
   id: number
   name: string
   location: { lat: number; lng: number }
+  products: ProductStore[]
 }
 
 export type DataReceiveCallback = (data: Store[]) => void

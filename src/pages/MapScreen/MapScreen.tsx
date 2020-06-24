@@ -4,11 +4,13 @@ import {
   LoadScript,
   Marker,
   HeatmapLayer,
+  InfoWindow,
 } from '@react-google-maps/api'
 import { listen as listenToStores, Store } from '../../models/stores'
 import { listen as listenToUsers, User } from '../../models/users'
 import { fetch as fetchCases, Case } from '../../models/cases'
 import { fetch as fetchHospitals, Hospital } from '../../models/hospitals'
+import StoreInfoWindow from '../../components/StoreInfoWindow/StoreInfoWindow'
 
 const style = {
   width: '100%',
@@ -99,7 +101,11 @@ export default function MapScreen() {
               key={store.id}
               icon="https://res.cloudinary.com/stanleysathler/covid-unibh/shop.png"
               position={store.location}
-            />
+            >
+              <InfoWindow>
+                <StoreInfoWindow store={store} />
+              </InfoWindow>
+            </Marker>
           ))}
 
         {/* Render places doing exams. */}
