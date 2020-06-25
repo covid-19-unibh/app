@@ -1,6 +1,7 @@
 import { buildLocation } from '../utils/functions'
 
 export type ProductStore = {
+  id: number
   name: string
   qnty: number
 }
@@ -15,8 +16,8 @@ export type Store = {
 export type DataReceiveCallback = (data: Store[]) => void
 
 const products = [
-  { name: 'Máscara', qnty: 10 },
-  { name: 'Álcool em gel', qnty: 2 },
+  { id: 1, name: 'Máscara', qnty: 10 },
+  { id: 2, name: 'Álcool em gel', qnty: 2 },
 ]
 
 const stores = [
