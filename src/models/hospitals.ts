@@ -1,4 +1,5 @@
 import { buildLocation } from '../utils/functions'
+import fire from './firebase'
 
 export type Hospital = {
   id: number
@@ -8,16 +9,24 @@ export type Hospital = {
 
 export type DataReceiveCallback = (data: Hospital[]) => void
 
-const mockedHospitals: Hospital[] = [
-  {
-    id: 1,
-    name: 'Hermes Pardini',
-    location: buildLocation(-19.960919, -43.969963),
-  },
-]
+const adaptData = (docSnapshots: any[]) =>
+  docSnapshots.map(docSnapshot => {
+    const serialized = docSnapshot.data()
+    return {
+      id: docSnapshot.id,
+      name: serialized.name,
+      location: buildLocation(
+        serialized.location.latitude,
+        serialized.location.longitude
+      )
+    }
+  })
 
 export const fetch = (onDataReceive: DataReceiveCallback) => {
-  setTimeout(() => {
-    onDataReceive(mockedHospitals)
-  }, 1000)
+  fire
+    .firestore()
+    .collection('hospitals')
+    .onSnapshot(qs => {
+      onDataReceive(adaptData(qs.docs))
+    })
 }
