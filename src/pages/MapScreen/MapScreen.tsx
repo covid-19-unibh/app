@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react'
+import React, { useEffect, useState, useCallback, useMemo } from 'react'
 import {
   GoogleMap,
   LoadScript,
@@ -11,15 +11,12 @@ import { listen as listenToUsers, User } from '../../models/users'
 import { fetch as fetchCases, Case } from '../../models/cases'
 import { fetch as fetchHospitals, Hospital } from '../../models/hospitals'
 import StoreInfoWindow from '../../components/StoreInfoWindow/StoreInfoWindow'
+import { geolocated, GeolocatedProps } from 'react-geolocated'
+import { buildLocation } from '../../utils/functions'
 
 const style = {
   width: '100%',
   height: 'calc(100vh - 56px)',
-}
-
-const mapCenter = {
-  lat: -19.959221,
-  lng: -43.966513,
 }
 
 const libraries = ['visualization']
@@ -35,7 +32,7 @@ type HeatmapLayerOptions = google.maps.visualization.HeatmapLayerOptions
 type HeatmapOptions = Omit<HeatmapLayerOptions, 'data'>
 type HeatmapItem = google.maps.visualization.WeightedLocation
 
-export default function MapScreen() {
+const MapScreen: React.FC<GeolocatedProps> = ({ coords }) => {
   const [stores, updateStores] = useState<Store[]>([])
   const [activeStores, updateActiveStores] = useState({})
   const [hospitals, updateHospitals] = useState<Hospital[]>([])
@@ -83,6 +80,10 @@ export default function MapScreen() {
     if (typeof window.google !== 'undefined')
       updateHeatData(buildHeatmapData(cases))
   }, [cases])
+
+  const mapCenter = useMemo(() => (
+    buildLocation(-19.959221, -43.966513)
+  ), [coords])
 
   const toggleStoreActivation = useCallback((store: Store) => {
     const isActive = (activeStores as any)[store.id] // @todo: remove `any`
@@ -135,6 +136,14 @@ export default function MapScreen() {
             />
           ))}
 
+        {/* Render current user. */}
+        {coords &&
+          <Marker
+            icon="https://i.ibb.co/6PGHTBr/user-circle.png"
+            position={buildLocation(coords.latitude, coords.longitude)}
+          />
+        }
+
         {/* Render users. */}
         {sickUsers &&
           sickUsers.map((user) => (
@@ -148,3 +157,10 @@ export default function MapScreen() {
     </LoadScript>
   )
 }
+
+export default geolocated({
+  positionOptions: {
+    enableHighAccuracy: true
+  },
+  watchPosition: true
+})(MapScreen)
