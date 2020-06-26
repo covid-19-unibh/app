@@ -19,7 +19,7 @@ const style = {
   height: 'calc(100vh - 56px)',
 }
 
-const libraries = ['visualization']
+const libraries = ['visualization', 'directions']
 
 const buildHeatmapData = (cases: Case[]) =>
   cases.map((c) => ({
@@ -31,8 +31,13 @@ const buildHeatmapData = (cases: Case[]) =>
 type HeatmapLayerOptions = google.maps.visualization.HeatmapLayerOptions
 type HeatmapOptions = Omit<HeatmapLayerOptions, 'data'>
 type HeatmapItem = google.maps.visualization.WeightedLocation
+type DirectionsService = google.maps.DirectionsService
+type DirectionsRenderer = google.maps.DirectionsRenderer
+type Map = google.maps.Map
 
 const MapScreen: React.FC<GeolocatedProps> = ({ coords }) => {
+  const [directionsService, createDirectionsService] = useState<DirectionsService>()
+  const [directionsRenderer, createDirectionsRenderer] = useState<DirectionsRenderer>()
   const [stores, updateStores] = useState<Store[]>([])
   const [activeStores, updateActiveStores] = useState({})
   const [hospitals, updateHospitals] = useState<Hospital[]>([])
@@ -83,7 +88,33 @@ const MapScreen: React.FC<GeolocatedProps> = ({ coords }) => {
 
   const mapCenter = useMemo(() => (
     buildLocation(-19.959221, -43.966513)
-  ), [coords])
+  ), [])
+
+  const handleLoadMapsScript = useCallback(() => {
+    createDirectionsService(new google.maps.DirectionsService())
+    createDirectionsRenderer(new google.maps.DirectionsRenderer())
+  }, [])
+
+  const handleLoadMap = useCallback((map: Map) => {
+    directionsRenderer?.setMap(map)
+  }, [directionsRenderer])
+
+  const handleHospitalClick = useCallback((hospital) => {
+    const currUserLocation = buildLocation(
+      (coords as any).latitude,
+      (coords as any).longitude
+    )
+
+    const request = {
+      origin: new google.maps.LatLng(currUserLocation.lat, currUserLocation.lng),
+      destination: new google.maps.LatLng(hospital.location.lat, hospital.location.lng),
+      travelMode: google.maps.TravelMode.DRIVING
+    }
+
+    directionsService?.route(request, (route) => {
+      directionsRenderer?.setDirections(route)
+    })
+  }, [directionsService, directionsRenderer, coords])
 
   const toggleStoreActivation = useCallback((store: Store) => {
     const isActive = (activeStores as any)[store.id] // @todo: remove `any`
@@ -94,11 +125,13 @@ const MapScreen: React.FC<GeolocatedProps> = ({ coords }) => {
     <LoadScript
       googleMapsApiKey={process.env.GOOGLE_API_KEY}
       libraries={libraries}
+      onLoad={handleLoadMapsScript}
     >
       <GoogleMap
         mapContainerStyle={style}
         center={mapCenter}
         zoom={15}
+        onLoad={handleLoadMap}
         options={{
           disableDefaultUI: true,
         }}
@@ -133,6 +166,7 @@ const MapScreen: React.FC<GeolocatedProps> = ({ coords }) => {
               key={hospital.id}
               icon="https://res.cloudinary.com/stanleysathler/covid-unibh/hospital.png"
               position={hospital.location}
+              onClick={() => handleHospitalClick(hospital)}
             />
           ))}
 
