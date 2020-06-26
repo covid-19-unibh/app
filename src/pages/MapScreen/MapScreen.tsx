@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useCallback } from 'react'
 import {
   GoogleMap,
   LoadScript,
@@ -37,6 +37,7 @@ type HeatmapItem = google.maps.visualization.WeightedLocation
 
 export default function MapScreen() {
   const [stores, updateStores] = useState<Store[]>([])
+  const [activeStores, updateActiveStores] = useState({})
   const [hospitals, updateHospitals] = useState<Hospital[]>([])
   const [sickUsers, updateUsers] = useState<User[]>([])
   const [cases, updateCases] = useState<Case[]>([])
@@ -49,6 +50,14 @@ export default function MapScreen() {
   useEffect(() => {
     listenToStores((stores) => {
       updateStores(stores)
+      updateActiveStores(
+        stores.reduce(
+          (obj, store) => ({
+            ...obj,
+            [store.id]: false
+          }), {}
+        )
+      )
     })
   }, [])
 
@@ -74,6 +83,11 @@ export default function MapScreen() {
     if (typeof window.google !== 'undefined')
       updateHeatData(buildHeatmapData(cases))
   }, [cases])
+
+  const toggleStoreActivation = useCallback((store: Store) => {
+    const isActive = (activeStores as any)[store.id] // @todo: remove `any`
+    updateActiveStores({ ...activeStores, [store.id]: !isActive })
+  }, [activeStores])
 
   return (
     <LoadScript
@@ -101,10 +115,13 @@ export default function MapScreen() {
               key={store.id}
               icon="https://res.cloudinary.com/stanleysathler/covid-unibh/shop.png"
               position={store.location}
+              onClick={() => toggleStoreActivation(store)}
             >
-              <InfoWindow>
-                <StoreInfoWindow store={store} />
-              </InfoWindow>
+              {(activeStores as any)[store.id] &&
+                <InfoWindow>
+                  <StoreInfoWindow store={store} />
+                </InfoWindow>
+              }
             </Marker>
           ))}
 
