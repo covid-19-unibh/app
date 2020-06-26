@@ -24,7 +24,7 @@ const StoreInfoWindow: React.FC<PropTypes> = ({ store }) => {
       </h4>
       <ul className={classes.list}>
         {store.products.map(p => (
-          <li key={p.id}>({p.qnty}) {p.name}</li>
+          <li key={p.sku}>({p.qnty}) {p.name}</li>
         ))}
       </ul>
     </div>

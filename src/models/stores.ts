@@ -1,7 +1,8 @@
 import { buildLocation } from '../utils/functions'
+import fire from './firebase'
 
 export type ProductStore = {
-  id: number
+  sku: number
   name: string
   qnty: number
 }
@@ -15,29 +16,25 @@ export type Store = {
 
 export type DataReceiveCallback = (data: Store[]) => void
 
-const products = [
-  { id: 1, name: 'Máscara', qnty: 10 },
-  { id: 2, name: 'Álcool em gel', qnty: 2 },
-]
-
-const stores = [
-  {
-    id: 1,
-    name: 'Drogaria Araújo',
-    location: buildLocation(-19.963002, -43.964006),
-    products,
-  },
-  {
-    id: 2,
-    name: 'Droga Raia',
-    location: buildLocation(-19.959649, -43.965991),
-    products,
-  },
-]
+const adaptData = (docSnapshots: any[]) =>
+  docSnapshots.map(docSnapshot => {
+    const serialized = docSnapshot.data()
+    return {
+      id: docSnapshot.id,
+      name: serialized.name,
+      location: buildLocation(
+        serialized.location.latitude,
+        serialized.location.longitude
+      ),
+      products: serialized.products
+    }
+  })
 
 export const listen = (onDataReceive: DataReceiveCallback) => {
-  // Should call `onDataReceive()` whenever new data is retrieved.
-  setTimeout(() => {
-    onDataReceive(stores)
-  }, 1000)
+  fire
+    .firestore()
+    .collection('stores')
+    .onSnapshot(qs => {
+      onDataReceive(adaptData(qs.docs))
+    })
 }
