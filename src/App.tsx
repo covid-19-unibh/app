@@ -4,7 +4,7 @@ import { Switch, Route, useLocation } from 'react-router-dom'
 import Sidebar from './components/Sidebar/Sidebar'
 import Header from './components/Header/Header'
 import MapScreen from './pages/MapScreen/MapScreen'
-import FAQScreen from './pages/FAQScreen/FAQScreen'
+import ChatScreen from './pages/ChatScreen/ChatScreen'
 import LocationRequired from './pages/LocationRequired/LocationRequired'
 import LocationProtectedRoute from './components/LocationProtectedRoute/LocationProtectedRoute'
 
@@ -34,7 +34,7 @@ function App() {
       <main className={classes.content}>
         <Switch>
           <Route exact path="/faq">
-            <FAQScreen />
+            <ChatScreen />
           </Route>
 
           <LocationProtectedRoute exact path="/">

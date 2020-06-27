@@ -1,12 +1,24 @@
 import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 
+export type SentOrReceived = 'sent' | 'received'
+
+export interface Message {
+  type: SentOrReceived
+  text: string
+}
+
+interface PropTypes {
+  messages: Message[]
+}
+
 const useStyles = makeStyles((theme) => ({
   message: {
     padding: theme.spacing(2),
     boxShadow: theme.shadows[1],
     marginBottom: theme.spacing(2),
     borderRadius: '5px',
+    whiteSpace: 'break-spaces',
   },
   received: {
     marginRight: theme.spacing(5),
@@ -18,17 +30,25 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-export default function Chat() {
+export default function Chat({ messages }: PropTypes) {
   const classes = useStyles()
 
   return (
     <div>
-      <div className={`${classes.message} ${classes.received}`}>
-        O que você deseja?
-      </div>
-      <div className={`${classes.message} ${classes.sent}`}>
-        Quero informações sobre o COVID-19.
-      </div>
+      {messages.map((msg, index) => {
+        const typeClass = msg.type === 'received'
+          ? classes.received
+          : classes.sent
+
+        return (
+          <div
+            key={index}
+            className={`${classes.message} ${typeClass}`}
+          >
+            {msg.text}
+          </div>
+        )
+      })}
     </div>
   )
 }
