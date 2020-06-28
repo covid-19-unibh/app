@@ -7,6 +7,7 @@ import MapScreen from './pages/MapScreen/MapScreen'
 import ChatScreen from './pages/ChatScreen/ChatScreen'
 import LocationRequired from './pages/LocationRequired/LocationRequired'
 import LocationProtectedRoute from './components/LocationProtectedRoute/LocationProtectedRoute'
+import QuestionaryScreen from './pages/QuestionaryScreen/QuestionaryScreen'
 
 const useStyles = makeStyles((theme) => ({
   content: {
@@ -14,7 +15,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const chooseTitle = (pathname: string) => (pathname === '/' ? 'Mapa' : 'Chat')
+const chooseTitle = (pathname: string) => {
+  switch (pathname) {
+    case '/': return 'Mapa'
+    case '/faq': return 'Chat'
+    case '/questionary': return 'Questionário'
+    default: return 'Mapa'
+  }
+}
 
 function App() {
   const classes = useStyles()
@@ -35,6 +43,10 @@ function App() {
         <Switch>
           <Route exact path="/faq">
             <ChatScreen />
+          </Route>
+
+          <Route exact path="/questionary">
+            <QuestionaryScreen />
           </Route>
 
           <LocationProtectedRoute exact path="/">

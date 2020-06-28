@@ -6,6 +6,7 @@ import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
 import QuestionAnswerIcon from '@material-ui/icons/QuestionAnswer'
+import ListAlt from '@material-ui/icons/ListAlt'
 import MapIcon from '@material-ui/icons/Map'
 import { Link } from 'react-router-dom'
 
@@ -46,6 +47,14 @@ export default function Sidebar({ open, onToggle }: PropTypes) {
                 <QuestionAnswerIcon />
               </ListItemIcon>
               <ListItemText primary="FAQ" />
+            </ListItem>
+          </Link>
+          <Link to="/questionary">
+            <ListItem button key="Questionary">
+              <ListItemIcon>
+                <ListAlt />
+              </ListItemIcon>
+              <ListItemText primary="Questionário" />
             </ListItem>
           </Link>
         </List>
