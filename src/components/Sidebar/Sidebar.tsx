@@ -46,7 +46,7 @@ export default function Sidebar({ open, onToggle }: PropTypes) {
               <ListItemIcon>
                 <QuestionAnswerIcon />
               </ListItemIcon>
-              <ListItemText primary="FAQ" />
+              <ListItemText primary="Chat" />
             </ListItem>
           </Link>
           <Link to="/questionary">
