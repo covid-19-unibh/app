@@ -87,7 +87,7 @@ const MapScreen: React.FC<GeolocatedProps> = ({ coords }) => {
   }, [cases])
 
   const mapCenter = useMemo(() => (
-    buildLocation(-19.959221, -43.966513)
+    buildLocation(-19.9659916, -43.9722723)
   ), [])
 
   const handleLoadMapsScript = useCallback(() => {
